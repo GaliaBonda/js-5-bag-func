@@ -9,11 +9,51 @@ const example = {
         cvalue: { yay: { cvalue: '2' } },
     },
 };
-console.log(example);
-console.log(typeof example);
+const example1 = {
+    hello: { cvalue: 1 },
+    world: {
+        cvalue: { yay: { cvalue: '2' } },
+    },
+    again: {
+        cvalue: {
+            yay: {
+                cvalue: { good: { cvalue: 3 } }
+            }
+        },
+    },
+};
+const example2 = {
+    hello: { cvalue: 1 },
+    world: {
+        cvalue: { yay: { cvalue: 'gg' } },
+    },
+    again: {
+        cvalue: {
+            yay: {
+                cvalue: { good: { cvalue: 3 } }
+            }
+        },
+    },
+};
+const example3 = {
+    hello: { cvalue: 1 },
+    world: {
+        cvalue: { yay: { cvalue: 'gg' } },
+    },
+    again: {
+        cvalue: {
+            yay: {
+                cvalue: { good: { cvalue: undefined } }
+            }
+        },
+    },
+};
+//console.log(example);
+//console.log(typeof example);
 //summ :: ALikeObj → number
 function isBigObject(obj) {
-    return Object.keys(obj)[0] in obj;
+    let objField = Object.keys(obj)[0];
+    return obj[objField]['cvalue'] !== undefined;
 }
 function summ(a) {
     const x = Object.keys(a).map(k => {
@@ -40,4 +80,7 @@ function summ(a) {
     return sum;
 }
 console.log(summ(example));
+console.log(summ(example1));
+console.log(summ(example2));
+console.log(summ(example3));
 //# sourceMappingURL=index.js.map
