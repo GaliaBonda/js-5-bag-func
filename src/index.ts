@@ -78,6 +78,20 @@ const example4: BigObject = {
   },
 };
 
+const example5: BigObject = {
+  mobo: undefined,
+  hello: { cvalue: 1 },
+  world: {
+    cvalue: {
+      yay: { cvalue: '2' },
+      grgr: { cvalue: undefined },
+      grr: { cvalue: '1q' },
+      qq: undefined,
+    },
+  },
+  grgr: { cvalue: undefined },
+};
+
 //console.log(example);
 //console.log(typeof example);
 
@@ -100,9 +114,15 @@ function isBigObject(obj: unknown): obj is BigObject {
 function summ(a: BigObject): number {
   const x = Object.keys(a).map((k) => {
     const elem = a[k];
-    if (elem === undefined || elem.cvalue === undefined) return 2021;
-    if (elem !== undefined && typeof elem.cvalue === 'string')
+    if (elem === undefined) {
+      return 0;
+    }
+    if (elem !== undefined && elem.cvalue === undefined) {
+      return 2021;
+    }
+    if (elem !== undefined && typeof elem.cvalue === 'string') {
       return Number.parseInt(elem.cvalue) || 2021;
+    }
     if (elem !== undefined && typeof elem.cvalue === 'number')
       return elem.cvalue;
     if (
@@ -126,3 +146,4 @@ console.log(summ(example1));
 console.log(summ(example2));
 console.log(summ(example3));
 console.log(summ(example4));
+console.log(summ(example5));
