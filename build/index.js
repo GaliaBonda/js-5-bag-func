@@ -17,8 +17,8 @@ const example1 = {
     again: {
         cvalue: {
             yay: {
-                cvalue: { good: { cvalue: 3 } }
-            }
+                cvalue: { good: { cvalue: 3 } },
+            },
         },
     },
 };
@@ -30,8 +30,8 @@ const example2 = {
     again: {
         cvalue: {
             yay: {
-                cvalue: { good: { cvalue: 3 } }
-            }
+                cvalue: { good: { cvalue: 3 } },
+            },
         },
     },
 };
@@ -43,8 +43,8 @@ const example3 = {
     again: {
         cvalue: {
             ha: {
-                cvalue: { good: { cvalue: undefined } }
-            }
+                cvalue: { good: { cvalue: undefined } },
+            },
         },
     },
 };
@@ -52,19 +52,24 @@ const example4 = {
     hello: { cvalue: 1 },
     world: {
         cvalue: undefined,
-    }
+    },
 };
 //console.log(example);
 //console.log(typeof example);
 //summ :: ALikeObj → number
 function isBigObject(obj) {
-    let objField = Object.keys(obj)[0];
+    if (typeof obj === 'object' && obj) {
+        const objField = Object.keys(obj)[0];
+        const innerObj = obj[objField];
+        if (innerObj)
+            return 'cvalue' in innerObj;
+    }
+    return false;
     //console.log(objField + ' obj field and cvalue value ' + obj[objField]['cvalue']);
-    return 'cvalue' in obj[objField];
     //return obj[objField]['cvalue'] !== undefined;
 }
 function summ(a) {
-    const x = Object.keys(a).map(k => {
+    const x = Object.keys(a).map((k) => {
         const elem = a[k];
         if (elem === undefined || elem.cvalue === undefined)
             return 2021;

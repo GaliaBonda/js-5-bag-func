@@ -15,7 +15,8 @@
 // };
 
 interface BigObject {
-  [a: string]: {
+  [a: string]:
+    | {
         cvalue: number | string | undefined | BigObject;
       }
     | undefined;
@@ -32,14 +33,13 @@ const example1: BigObject = {
   hello: { cvalue: 1 },
   world: {
     cvalue: { yay: { cvalue: '2' } },
-    },
+  },
   again: {
-      cvalue: {
-          yay: {
-              cvalue:
-                  { good: { cvalue: 3 } }
-          }
+    cvalue: {
+      yay: {
+        cvalue: { good: { cvalue: 3 } },
       },
+    },
   },
 };
 
@@ -47,14 +47,13 @@ const example2: BigObject = {
   hello: { cvalue: 1 },
   world: {
     cvalue: { yay: { cvalue: 'gg' } },
-    },
+  },
   again: {
-      cvalue: {
-          yay: {
-              cvalue:
-                  { good: { cvalue: 3 } }
-          }
+    cvalue: {
+      yay: {
+        cvalue: { good: { cvalue: 3 } },
       },
+    },
   },
 };
 
@@ -62,14 +61,13 @@ const example3: BigObject = {
   hello: { cvalue: 1 },
   world: {
     cvalue: { yay: { cvalue: 'gg' } },
-    },
+  },
   again: {
-      cvalue: {
-          ha: {
-              cvalue:
-                  { good: { cvalue: undefined } }
-          }
+    cvalue: {
+      ha: {
+        cvalue: { good: { cvalue: undefined } },
       },
+    },
   },
 };
 
@@ -77,7 +75,7 @@ const example4: BigObject = {
   hello: { cvalue: 1 },
   world: {
     cvalue: undefined,
-    }
+  },
 };
 
 //console.log(example);
@@ -85,23 +83,28 @@ const example4: BigObject = {
 
 //summ :: ALikeObj → number
 
-function isBigObject(obj: any): obj is BigObject {
-    let objField: string = Object.keys(obj)[0];
+function isBigObject(obj: unknown): obj is BigObject {
+  if (typeof obj === 'object' && obj) {
+    const objField: string = Object.keys(obj)[0];
+    const innerObj = (obj as BigObject)[objField];
+    if (innerObj) return 'cvalue' in innerObj;
+  }
 
-    //console.log(objField + ' obj field and cvalue value ' + obj[objField]['cvalue']);
-    
-    return 'cvalue' in obj[objField];
-    //return obj[objField]['cvalue'] !== undefined;
+  return false;
+
+  //console.log(objField + ' obj field and cvalue value ' + obj[objField]['cvalue']);
+
+  //return obj[objField]['cvalue'] !== undefined;
 }
 
 function summ(a: BigObject): number {
-  const x = Object.keys(a).map(k => {
+  const x = Object.keys(a).map((k) => {
     const elem = a[k];
     if (elem === undefined || elem.cvalue === undefined) return 2021;
     if (elem !== undefined && typeof elem.cvalue === 'string')
-        return Number.parseInt(elem.cvalue) || 2021;
+      return Number.parseInt(elem.cvalue) || 2021;
     if (elem !== undefined && typeof elem.cvalue === 'number')
-          return elem.cvalue;
+      return elem.cvalue;
     if (
       elem !== undefined &&
       //elem.cvalue !== undefined &&
