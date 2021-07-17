@@ -15,8 +15,7 @@
 // };
 
 interface BigObject {
-  [a: string]:
-    | {
+  [a: string]: {
         cvalue: number | string | undefined | BigObject;
       }
     | undefined;
@@ -66,7 +65,7 @@ const example3: BigObject = {
     },
   again: {
       cvalue: {
-          yay: {
+          ha: {
               cvalue:
                   { good: { cvalue: undefined } }
           }
@@ -89,7 +88,10 @@ const example4: BigObject = {
 function isBigObject(obj: any): obj is BigObject {
     let objField: string = Object.keys(obj)[0];
 
-    return obj[objField]['cvalue'] !== undefined;
+    //console.log(objField + ' obj field and cvalue value ' + obj[objField]['cvalue']);
+    
+    return 'cvalue' in obj[objField];
+    //return obj[objField]['cvalue'] !== undefined;
 }
 
 function summ(a: BigObject): number {
@@ -98,17 +100,15 @@ function summ(a: BigObject): number {
     if (elem === undefined || elem.cvalue === undefined) return 2021;
     if (elem !== undefined && typeof elem.cvalue === 'string')
         return Number.parseInt(elem.cvalue) || 2021;
+    if (elem !== undefined && typeof elem.cvalue === 'number')
+          return elem.cvalue;
     if (
       elem !== undefined &&
-      elem.cvalue !== undefined &&
-      typeof elem.cvalue !== 'string' &&
-      typeof elem.cvalue !== 'number' &&
-      isBigObject(elem.cvalue) !== undefined
+      //elem.cvalue !== undefined &&
+      isBigObject(elem.cvalue)
     ) {
-      return summ(elem.cvalue as BigObject);
+      return summ(elem.cvalue);
     }
-    if (elem !== undefined && typeof elem.cvalue === 'number')
-      return elem.cvalue;
   });
   //console.log(x);
   let sum = 0;

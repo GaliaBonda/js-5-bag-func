@@ -42,7 +42,7 @@ const example3 = {
     },
     again: {
         cvalue: {
-            yay: {
+            ha: {
                 cvalue: { good: { cvalue: undefined } }
             }
         },
@@ -59,7 +59,9 @@ const example4 = {
 //summ :: ALikeObj → number
 function isBigObject(obj) {
     let objField = Object.keys(obj)[0];
-    return obj[objField]['cvalue'] !== undefined;
+    //console.log(objField + ' obj field and cvalue value ' + obj[objField]['cvalue']);
+    return 'cvalue' in obj[objField];
+    //return obj[objField]['cvalue'] !== undefined;
 }
 function summ(a) {
     const x = Object.keys(a).map(k => {
@@ -68,15 +70,13 @@ function summ(a) {
             return 2021;
         if (elem !== undefined && typeof elem.cvalue === 'string')
             return Number.parseInt(elem.cvalue) || 2021;
-        if (elem !== undefined &&
-            elem.cvalue !== undefined &&
-            typeof elem.cvalue !== 'string' &&
-            typeof elem.cvalue !== 'number' &&
-            isBigObject(elem.cvalue) !== undefined) {
-            return summ(elem.cvalue);
-        }
         if (elem !== undefined && typeof elem.cvalue === 'number')
             return elem.cvalue;
+        if (elem !== undefined &&
+            //elem.cvalue !== undefined &&
+            isBigObject(elem.cvalue)) {
+            return summ(elem.cvalue);
+        }
     });
     //console.log(x);
     let sum = 0;
