@@ -1,4 +1,5 @@
 // My interface!!!
+
 // interface CvalueObj {
 //   cvalue: undefined | string | number | ALikeObj;
 // }
@@ -6,13 +7,6 @@
 // interface ALikeObj {
 //   [key: string]: undefined | CvalueObj;
 // }
-
-// const example: ALikeObj = {
-//   hello: { cvalue: 1 },
-//   world: {
-//     cvalue: { yay: { cvalue: '2' } },
-//   },
-// };
 
 interface BigObject {
   [a: string]:
@@ -92,9 +86,6 @@ const example5: BigObject = {
   grgr: { cvalue: undefined },
 };
 
-//console.log(example);
-//console.log(typeof example);
-
 //summ :: ALikeObj → number
 
 function isBigObject(obj: unknown): obj is BigObject {
@@ -103,12 +94,7 @@ function isBigObject(obj: unknown): obj is BigObject {
     const innerObj = (obj as BigObject)[objField];
     if (innerObj) return 'cvalue' in innerObj;
   }
-
   return false;
-
-  //console.log(objField + ' obj field and cvalue value ' + obj[objField]['cvalue']);
-
-  //return obj[objField]['cvalue'] !== undefined;
 }
 
 function summ(a: BigObject): number {
@@ -117,23 +103,17 @@ function summ(a: BigObject): number {
     if (elem === undefined) {
       return 0;
     }
-    if (elem !== undefined && elem.cvalue === undefined) {
+    if (elem.cvalue === undefined) {
       return 2021;
     }
-    if (elem !== undefined && typeof elem.cvalue === 'string') {
+    if (typeof elem.cvalue === 'string') {
       return Number.parseInt(elem.cvalue) || 2021;
     }
-    if (elem !== undefined && typeof elem.cvalue === 'number')
-      return elem.cvalue;
-    if (
-      elem !== undefined &&
-      //elem.cvalue !== undefined &&
-      isBigObject(elem.cvalue)
-    ) {
+    if (typeof elem.cvalue === 'number') return elem.cvalue;
+    if (isBigObject(elem.cvalue)) {
       return summ(elem.cvalue);
     }
   });
-  //console.log(x);
   let sum = 0;
   for (let i = 0; i < x.length; i++) {
     sum += x[i] as number;
