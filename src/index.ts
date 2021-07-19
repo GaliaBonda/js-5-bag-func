@@ -16,6 +16,41 @@ interface BigObject {
     | undefined;
 }
 
+//summ :: ALikeObj → number
+
+function isBigObject(obj: unknown): obj is BigObject {
+  if (typeof obj === 'object' && obj) {
+    const objField: string = Object.keys(obj)[0];
+    const innerObj = (obj as BigObject)[objField];
+    if (innerObj) return 'cvalue' in innerObj;
+  }
+  return false;
+}
+
+function summ(a: BigObject): number {
+  const x = Object.keys(a).map((k) => {
+    const elem = a[k];
+    if (elem === undefined) {
+      return 0;
+    }
+    if (elem.cvalue === undefined) {
+      return 2021;
+    }
+    if (typeof elem.cvalue === 'string') {
+      return Number.parseInt(elem.cvalue) || 2021;
+    }
+    if (typeof elem.cvalue === 'number') return elem.cvalue;
+    if (isBigObject(elem.cvalue)) {
+      return summ(elem.cvalue);
+    }
+  });
+  let sum = 0;
+  for (let i = 0; i < x.length; i++) {
+    sum += x[i] as number;
+  }
+  return sum;
+}
+
 const example: BigObject = {
   hello: { cvalue: 1 },
   world: {
@@ -85,41 +120,6 @@ const example5: BigObject = {
   },
   grgr: { cvalue: undefined },
 };
-
-//summ :: ALikeObj → number
-
-function isBigObject(obj: unknown): obj is BigObject {
-  if (typeof obj === 'object' && obj) {
-    const objField: string = Object.keys(obj)[0];
-    const innerObj = (obj as BigObject)[objField];
-    if (innerObj) return 'cvalue' in innerObj;
-  }
-  return false;
-}
-
-function summ(a: BigObject): number {
-  const x = Object.keys(a).map((k) => {
-    const elem = a[k];
-    if (elem === undefined) {
-      return 0;
-    }
-    if (elem.cvalue === undefined) {
-      return 2021;
-    }
-    if (typeof elem.cvalue === 'string') {
-      return Number.parseInt(elem.cvalue) || 2021;
-    }
-    if (typeof elem.cvalue === 'number') return elem.cvalue;
-    if (isBigObject(elem.cvalue)) {
-      return summ(elem.cvalue);
-    }
-  });
-  let sum = 0;
-  for (let i = 0; i < x.length; i++) {
-    sum += x[i] as number;
-  }
-  return sum;
-}
 
 console.log(summ(example));
 console.log(summ(example1));
