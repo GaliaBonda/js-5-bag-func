@@ -19,12 +19,36 @@ interface BigObject {
 //summ :: ALikeObj → number
 
 function isBigObject(obj: unknown): obj is BigObject {
+  // if (typeof obj === 'object' && obj) {
+  //   const objField: string = Object.keys(obj)[0];
+  //   const innerObj = (obj as BigObject)[objField];
+  //   if (innerObj) return 'cvalue' in innerObj;
+  // }
+  // return false;
   if (typeof obj === 'object' && obj) {
-    const objField: string = Object.keys(obj)[0];
-    const innerObj = (obj as BigObject)[objField];
-    if (innerObj) return 'cvalue' in innerObj;
+    const keys: string[] = Object.keys(obj);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      if (hasKey(obj, key)) {
+        const value = obj[key];
+        if (
+          typeof value === 'undefined' ||
+          (typeof value === 'object' &&
+            'cvalue' in value &&
+            (typeof value['cvalue'] === 'string' ||
+              typeof value['cvalue'] === 'number' ||
+              typeof value['cvalue'] === 'undefined' ||
+              isBigObject(value['cvalue'])))
+        )
+          return true;
+      }
+    }
   }
   return false;
+}
+
+function hasKey<O>(obj: O, key: PropertyKey): key is keyof O {
+  return key in obj;
 }
 
 function summ(a: BigObject): number {
@@ -39,14 +63,14 @@ function summ(a: BigObject): number {
     if (typeof elem.cvalue === 'string') {
       return Number.parseInt(elem.cvalue) || 2021;
     }
-    if (typeof elem.cvalue === 'number') return elem.cvalue;
     if (isBigObject(elem.cvalue)) {
       return summ(elem.cvalue);
     }
+    return elem.cvalue;
   });
   let sum = 0;
   for (let i = 0; i < x.length; i++) {
-    sum += x[i] as number;
+    sum += x[i];
   }
   return sum;
 }

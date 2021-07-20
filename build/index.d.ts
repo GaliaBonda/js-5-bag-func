@@ -4,6 +4,7 @@ interface BigObject {
     } | undefined;
 }
 declare function isBigObject(obj: unknown): obj is BigObject;
+declare function hasKey<O>(obj: O, key: PropertyKey): key is keyof O;
 declare function summ(a: BigObject): number;
 declare const example: BigObject;
 declare const example1: BigObject;
