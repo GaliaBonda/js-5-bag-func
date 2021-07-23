@@ -2,19 +2,11 @@
 // My interface!!!
 //summ :: BigObject → number
 function isBigObject(obj) {
-    // if (typeof obj === 'object' && obj) {
-    //   const objField: string = Object.keys(obj)[0];
-    //   const innerObj = (obj as BigObject)[objField];
-    //   if (innerObj) return 'cvalue' in innerObj;
-    // }
-    // return false;
     if (typeof obj === 'object' && obj) {
         const keys = Object.keys(obj);
         for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
-            //if (hasKey(obj, key)) {
             const value = obj[key];
-            //as BigObject
             if (typeof value === 'undefined' ||
                 (typeof value === 'object' &&
                     'cvalue' in value &&
@@ -23,14 +15,10 @@ function isBigObject(obj) {
                         typeof value['cvalue'] === 'undefined' ||
                         isBigObject(value['cvalue']))))
                 return true;
-            //}
         }
     }
     return false;
 }
-// function hasKey<O>(obj: O, key: PropertyKey): key is keyof O {
-//   return key in obj;
-// }
 function summ(a) {
     const x = Object.keys(a).map((k) => {
         var _a;
@@ -41,8 +29,6 @@ function summ(a) {
         if (typeof elem.cvalue === 'string') {
             return Number.parseInt(elem.cvalue) || 2021;
         }
-        // if (typeof elem.cvalue === 'object')
-        //   return summ(elem.cvalue);
         if (isBigObject(elem.cvalue)) {
             return summ(elem.cvalue);
         }

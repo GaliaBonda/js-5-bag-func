@@ -19,19 +19,11 @@ interface BigObject {
 //summ :: BigObject → number
 
 function isBigObject(obj: unknown): obj is BigObject {
-  // if (typeof obj === 'object' && obj) {
-  //   const objField: string = Object.keys(obj)[0];
-  //   const innerObj = (obj as BigObject)[objField];
-  //   if (innerObj) return 'cvalue' in innerObj;
-  // }
-  // return false;
   if (typeof obj === 'object' && obj) {
     const keys: string[] = Object.keys(obj);
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
-      //if (hasKey(obj, key)) {
       const value = (obj as BigObject)[key];
-      //as BigObject
       if (
         typeof value === 'undefined' ||
         (typeof value === 'object' &&
@@ -42,15 +34,10 @@ function isBigObject(obj: unknown): obj is BigObject {
             isBigObject(value['cvalue'])))
       )
         return true;
-      //}
     }
   }
   return false;
 }
-
-// function hasKey<O>(obj: O, key: PropertyKey): key is keyof O {
-//   return key in obj;
-// }
 
 function summ(a: BigObject): number {
   const x = Object.keys(a).map((k) => {
@@ -61,8 +48,6 @@ function summ(a: BigObject): number {
     if (typeof elem.cvalue === 'string') {
       return Number.parseInt(elem.cvalue) || 2021;
     }
-    // if (typeof elem.cvalue === 'object')
-    //   return summ(elem.cvalue);
     if (isBigObject(elem.cvalue)) {
       return summ(elem.cvalue);
     }
